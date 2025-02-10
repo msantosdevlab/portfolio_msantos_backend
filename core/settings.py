@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ckeditor',
+    'tinymce',
     'rest_framework',
     'corsheaders',
     'api',
@@ -151,4 +151,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+}
+
+TINYMCE_DEFAULT_CONFIG = {
+    'height': 300,
+    'width': 900,
+    'toolbar': 'undo redo | bold italic | alignleft aligncenter alignright | link image',
 }
