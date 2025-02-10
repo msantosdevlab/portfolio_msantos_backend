@@ -1,5 +1,5 @@
 from django.db import models
-from ckeditor.fields import RichTextField
+from tinymce.models import HTMLField
 from django.core.exceptions import ValidationError
 
 TARGET_BTN = [
@@ -22,7 +22,7 @@ def validate_image(image):
 class Introduction(models.Model):
     eyebrow = models.CharField(max_length=65, blank=True, null=True)
     title = models.CharField(max_length=65, blank=True, null=True)
-    description = RichTextField(blank=True, null=True)
+    description = HTMLField(blank=True, null=True)
     button_text = models.CharField(max_length=165, blank=True, null=True)
     button_href = models.CharField(max_length=200, choices=TARGET_BTN, default="_self")
 
@@ -31,28 +31,30 @@ class Introduction(models.Model):
 
 class ProjectSectionTitle(models.Model):
     title = models.CharField(max_length=65, blank=True, null=True)
-    description = RichTextField(blank=True, null=True)
+    description = HTMLField(blank=True, null=True)
 
     def __str__(self):
         return f"{str(self.title)[:50]}"
 
-class ProjectsSectionCategories(models.Model):
-    name = models.CharField(max_length=65, blank=True, null=True)
+class ProjectCategory(models.Model):
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return f"{str(self.name)}"
 
-class ProjectCardTag(models.Model):
+class TechStack(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         return f"{str(self.name)}"
 
-class ProjectCard(models.Model):
+class Project(models.Model):
     title = models.CharField(max_length=165, blank=True, null=True)
-    img = models.ImageField(upload_to='%Y-%m/%d/', validators=[validate_image])
-    description = RichTextField(blank=True, null=True)
-    tags = models.ManyToManyField(ProjectCardTag, blank=True)  # Relação muitos-para-muitos
+    thumbnail = models.ImageField(upload_to='%Y-%m/%d/', validators=[validate_image])
+    short_description = HTMLField(max_length=300, blank=True, null=True)
+    description = HTMLField(blank=True, null=True)
+    category = models.ForeignKey(ProjectCategory, on_delete=models.SET_NULL, null=True, blank=True)  # Relação muitos-para-um
+    techs = models.ManyToManyField(TechStack, blank=True) # Relação muitos-para-muitos
     link_rep_git = models.CharField(max_length=255, blank=True, null=True)
     link_preview = models.CharField(max_length=255, blank=True, null=True)
 
