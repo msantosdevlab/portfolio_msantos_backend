@@ -1,8 +1,8 @@
-from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.response import Response
-from rest_framework.permissions import BasePermission
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated, BasePermission  # ou sua APIKeyPermission personalizada
+from rest_framework.exceptions import AuthenticationFailed
 from .models import Introduction
 from .serializers import IntroductionSerializer
 
@@ -19,16 +19,18 @@ class APIKeyPermission(BasePermission):
         except AuthenticationFailed:
             return False
 
-class IntroductionViewSet(ReadOnlyModelViewSet):
+class ContentViewSet(ReadOnlyModelViewSet):
+    # Valida o token em cada requisição
     authentication_classes = [JWTAuthentication]
-    permission_classes = [APIKeyPermission]
-    queryset = Introduction.objects.all()
-    serializer_class = IntroductionSerializer
+    permission_classes = [IsAuthenticated] 
 
     def list(self, request, *args, **kwargs):
-        instance = self.get_queryset().first()
-        if instance:
-            serializer = self.get_serializer(instance)
-            return Response(serializer.data)
-        return Response({}, status=204)
+        # Obtém a instância atualizada de Introduction a cada requisição
+        introduction = Introduction.objects.first()
+        introduction_data = IntroductionSerializer(introduction).data if introduction else None
 
+        content_data = {
+            'introduction': introduction_data,
+        }
+
+        return Response(content_data, status=200)
