@@ -22,3 +22,9 @@ class ProjectSectionTitle(models.Model):
 
     def __str__(self):
         return f"{str(self.title)[:50]}"
+
+class ProjectsSectionCategories(models.Model):
+    name = models.CharField(max_length=65, blank=True, null=True)
+
+    def __str__(self):
+        return f"{str(self.name)}"
