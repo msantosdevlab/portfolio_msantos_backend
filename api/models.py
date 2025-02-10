@@ -50,7 +50,7 @@ class ProjectCardTag(models.Model):
 
 class ProjectCard(models.Model):
     title = models.CharField(max_length=165, blank=True, null=True)
-    img = models.ImageField(upload_to='projectsimages/', validators=[validate_image])
+    img = models.ImageField(upload_to='%Y-%m/%d/', validators=[validate_image])
     description = RichTextField(blank=True, null=True)
     tags = models.ManyToManyField(ProjectCardTag, blank=True)  # Relação muitos-para-muitos
     link_rep_git = models.CharField(max_length=255, blank=True, null=True)
