@@ -35,6 +35,6 @@ class TechStackAdmin(admin.ModelAdmin):
 # Registro do modelo Project
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('title', 'description', 'link_rep_git', 'link_preview')
-    search_fields = ('title', 'description', 'link_rep_git', 'link_preview')
+    list_display = ('title', 'description_left', 'link_rep_git', 'link_preview')
+    search_fields = ('title', 'description_left', 'link_rep_git', 'link_preview')
     filter_horizontal = ('techs',)

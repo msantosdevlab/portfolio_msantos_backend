@@ -52,7 +52,8 @@ class Project(models.Model):
     title = models.CharField(max_length=165, blank=True, null=True)
     thumbnail = models.ImageField(upload_to='%Y-%m/%d/', validators=[validate_image])
     short_description = HTMLField(max_length=300, blank=True, null=True)
-    description = HTMLField(blank=True, null=True)
+    description_right = HTMLField(blank=True, null=True)
+    description_left = HTMLField(blank=True, null=True)
     category = models.ForeignKey(ProjectCategory, on_delete=models.SET_NULL, null=True, blank=True)  # Relação muitos-para-um
     techs = models.ManyToManyField(TechStack, blank=True) # Relação muitos-para-muitos
     link_rep_git = models.CharField(max_length=255, blank=True, null=True)
@@ -60,3 +61,4 @@ class Project(models.Model):
 
     def __str__(self):
         return f"{str(self.title)[:50]}"
+
