@@ -156,5 +156,12 @@ REST_FRAMEWORK = {
 TINYMCE_DEFAULT_CONFIG = {
     'height': 300,
     'width': 900,
-    'toolbar': 'undo redo | bold italic | alignleft aligncenter alignright | link image',
+    "plugins": "advlist,autolink,lists,link,code,charmap,print,preview,anchor,"
+    "searchreplace,visualblocks,fullscreen,insertdatetime,media,table,paste,"
+    "code,help,wordcount",
+    "toolbar": "undo redo | formatselect | "
+    "bold italic backcolor | alignleft aligncenter "
+    "alignright alignjustify | bullist numlist outdent indent | "
+    "removeformat | help",
+    "block_formats": "Parágrafo=p; Cabeçalho 3=h3;"
 }
