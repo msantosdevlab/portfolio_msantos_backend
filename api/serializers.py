@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Introduction, ProjectSectionTitle, ProjectCategory, TechStack, Project
+from .models import Introduction, ProjectSectionTitle, ProjectCategory, TechStack, Project, Linkedin, Contact
 from django.core.exceptions import ValidationError
 
 class IntroductionSerializer(serializers.ModelSerializer):
@@ -35,3 +35,13 @@ class ProjectSerializer(serializers.ModelSerializer):
         if value.size > 5 * 1024 * 1024:
             raise serializers.ValidationError("The file is too big. The limit is 5MB.")
         return value
+    
+class LinkedinSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Linkedin
+        fields = '__all__'
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = '__all__'

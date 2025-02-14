@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Introduction, ProjectSectionTitle, ProjectCategory, TechStack, Project
+from .models import Introduction, ProjectSectionTitle, ProjectCategory, TechStack, Project, Linkedin, Contact
 
 # Registro do modelo Introduction
 @admin.register(Introduction)
@@ -38,3 +38,21 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display = ('title', 'description_left', 'link_rep_git', 'link_preview')
     search_fields = ('title', 'description_left', 'link_rep_git', 'link_preview')
     filter_horizontal = ('techs',)
+
+# Registro do modelo Linkedin
+@admin.register(Linkedin)
+class LinkedinAdmin(admin.ModelAdmin):
+    list_display = ("title", "description")
+
+    def has_add_permission(self, request):
+        # Limita a quantidade de registros para um
+        return not Linkedin.objects.exists()
+    
+    # Registro do modelo Linkedin
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ("title", "description")
+
+    def has_add_permission(self, request):
+        # Limita a quantidade de registros para um
+        return not Contact.objects.exists()

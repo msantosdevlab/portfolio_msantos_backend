@@ -3,12 +3,14 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .models import Introduction, ProjectSectionTitle, ProjectCategory, Project
+from .models import Introduction, ProjectSectionTitle, ProjectCategory, Project, Linkedin, Contact
 from .serializers import (
     IntroductionSerializer,
     ProjectSectionTitleSerializer,
     ProjectCategorySerializer,
     ProjectSerializer,
+    LinkedinSerializer,
+    ContactSerializer
 )
 class APIKeyPermission(BasePermission):
     def has_permission(self, request, view):
@@ -41,11 +43,20 @@ class ContentViewSet(ReadOnlyModelViewSet):
         projects = Project.objects.all()
         projects_data = ProjectSerializer(projects, many=True).data if projects else None
 
+        linkedin = Linkedin.objects.first()
+        linkedin_data = LinkedinSerializer(linkedin).data if linkedin else None
+
+        contact = Contact.objects.first()
+        contact_data = ContactSerializer(contact).data if contact else None
+
         content_data = {
             'introduction': introduction_data,
             'project_title': project_title_data,
             'project_categories': project_categories_data,
             'projects': projects_data,
+            'linkedin': linkedin_data,
+            'contact': contact_data,
+
         }
 
         return Response(content_data, status=200)

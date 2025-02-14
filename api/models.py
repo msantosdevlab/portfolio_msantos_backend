@@ -62,3 +62,23 @@ class Project(models.Model):
     def __str__(self):
         return f"{str(self.title)[:50]}"
 
+class Linkedin(models.Model):
+    title = HTMLField(max_length=95, blank=True, null=True)
+    description = HTMLField(blank=True, null=True)
+    button_href = models.CharField(max_length=165, blank=True, null=True)
+    button_text = models.CharField(max_length=165, blank=True, null=True)
+    button_target = models.CharField(max_length=200, choices=TARGET_BTN, default="_self")
+
+    def __str__(self):
+        return f"{str(self.title)[:50]}"
+    
+
+class Contact(models.Model):
+    title = HTMLField(max_length=95, blank=True, null=True)
+    description = HTMLField(blank=True, null=True)
+    button_href = models.CharField(max_length=165, blank=True, null=True)
+    button_text = models.CharField(max_length=165, blank=True, null=True)
+    button_target = models.CharField(max_length=200, choices=TARGET_BTN, default="_self")
+
+    def __str__(self):
+        return f"{str(self.title)[:50]}"
