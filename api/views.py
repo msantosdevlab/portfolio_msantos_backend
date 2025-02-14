@@ -3,6 +3,7 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from django.utils import translation
 from .models import Introduction, ProjectSectionTitle, ProjectCategory, Project, Linkedin, Contact
 from .serializers import (
     IntroductionSerializer,
@@ -31,6 +32,11 @@ class ContentViewSet(ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
+        # Obtém o idioma da requisição (parâmetro 'lang' da URL)
+        lang = request.GET.get('lang', 'pt')  # Se não houver, usa 'pt' como idioma padrão
+        translation.activate(lang)  # Ativa o idioma baseado no parâmetro 'lang'
+
+        # Busca os dados do modelo e serializa conforme o idioma
         introduction = Introduction.objects.first()
         introduction_data = IntroductionSerializer(introduction).data if introduction else None
 
@@ -56,7 +62,7 @@ class ContentViewSet(ReadOnlyModelViewSet):
             'projects': projects_data,
             'linkedin': linkedin_data,
             'contact': contact_data,
-
         }
 
+        # Retorna a resposta com o conteúdo traduzido
         return Response(content_data, status=200)

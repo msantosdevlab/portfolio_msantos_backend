@@ -1,6 +1,7 @@
 from django.db import models
 from tinymce.models import HTMLField
 from django.core.exceptions import ValidationError
+from modeltranslation.translator import TranslationOptions
 
 TARGET_BTN = [
     ("_self", "_self"),
@@ -17,7 +18,6 @@ def validate_image(image):
     valid_extensions = ['jpg', 'jpeg', 'png']
     if file_extension not in valid_extensions:
         raise ValidationError(f"Invalid image format. Only {', '.join(valid_extensions)} are allowed.")
-
 
 class Introduction(models.Model):
     eyebrow = models.CharField(max_length=65, blank=True, null=True)
@@ -82,3 +82,19 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"{str(self.title)[:50]}"
+
+
+class IntroductionTranslationOptions(TranslationOptions):
+    fields = ('eyebrow', 'title', 'description', 'button_text')
+
+class ProjectCategoryTranslationOptions(TranslationOptions):
+    fields = ('name',)
+
+class ProjectTranslationOptions(TranslationOptions):
+    fields = ('title', 'short_description', 'description_right', 'description_left')
+   
+class LinkedinTranslationOptions(TranslationOptions):
+    fields = ('title', 'description', 'button_text')
+
+class ContactTranslationOptions(TranslationOptions):
+    fields = ('title', 'description', 'button_text')

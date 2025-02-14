@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+from django.utils.translation import gettext_lazy as _
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,11 +43,14 @@ INSTALLED_APPS = [
     'tinymce',
     'rest_framework',
     'corsheaders',
-    'api',
+    'api.apps.ApiConfig',
+    'modeltranslation',
 ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'api.languagemid.LanguageMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -109,7 +114,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-PT'  # Idioma principal
+
+LANGUAGES = [
+    ('pt', _('Português')),
+    ('es', _('Espanhol')),
+    ('en', _('Inglês')),
+]
 
 TIME_ZONE = 'Europe/Madrid'
 
@@ -154,14 +165,16 @@ REST_FRAMEWORK = {
 }
 
 TINYMCE_DEFAULT_CONFIG = {
-    'height': 300,
-    'width': 900,
-    "plugins": "advlist,autolink,lists,link,code,charmap,print,preview,anchor,"
-    "searchreplace,visualblocks,fullscreen,insertdatetime,media,table,paste,"
-    "code,help,wordcount",
+    "height": 300,
+    "width": 900,
+    "plugins": "advlist autolink lists link code charmap print preview anchor "
+               "searchreplace visualblocks fullscreen insertdatetime media table paste "
+               "code help wordcount",
     "toolbar": "undo redo | formatselect | "
-    "bold italic backcolor | alignleft aligncenter "
-    "alignright alignjustify | bullist numlist outdent indent | "
-    "removeformat | help",
-    "block_formats": "Parágrafo=p; Cabeçalho 3=h3;"
+               "bold italic backcolor | alignleft aligncenter "
+               "alignright alignjustify | bullist numlist outdent indent | "
+               "removeformat | help",
+    "block_formats": "Parágrafo=p; Cabeçalho 1=h1; Cabeçalho 2=h2; Cabeçalho 3=h3;",
+    "valid_elements": "span[*],strong,em,p,ul,ol,li,a[href|target],br,h1,h2,h3,h4,h5,h6",
+    "extended_valid_elements": "span[class|style]",
 }
