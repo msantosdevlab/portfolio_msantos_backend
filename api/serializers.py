@@ -1,15 +1,19 @@
 from rest_framework import serializers
-from .models import Introduction, ProjectSectionTitle, ProjectCategory, TechStack, Project, Linkedin, Contact
-from django.core.exceptions import ValidationError
+from .models import Menu, Introduction, ProjectSectionContent, ProjectCategory, TechStack, Project, Linkedin, Contact, Footer
+
+class MenuSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Menu
+        fields = '__all__'
 
 class IntroductionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Introduction
         fields = '__all__'
 
-class ProjectSectionTitleSerializer(serializers.ModelSerializer):
+class ProjectSectionContentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ProjectSectionTitle
+        model = ProjectSectionContent
         fields = '__all__'
 
 class ProjectCategorySerializer(serializers.ModelSerializer):
@@ -44,4 +48,9 @@ class LinkedinSerializer(serializers.ModelSerializer):
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
+        fields = '__all__'
+
+class FooterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Footer
         fields = '__all__'

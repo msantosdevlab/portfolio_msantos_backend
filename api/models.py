@@ -18,6 +18,14 @@ def validate_image(image):
     valid_extensions = ['jpg', 'jpeg', 'png']
     if file_extension not in valid_extensions:
         raise ValidationError(f"Invalid image format. Only {', '.join(valid_extensions)} are allowed.")
+    
+class Menu(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    label = models.CharField(max_length=255)
+    order = models.PositiveIntegerField(default=0, unique=True) # Para controlar a ordem de exibição
+
+    def __str__(self):
+        return self.label
 
 class Introduction(models.Model):
     eyebrow = models.CharField(max_length=65, blank=True, null=True)
@@ -29,9 +37,11 @@ class Introduction(models.Model):
     def __str__(self):
         return f"{str(self.title)[:50]}"
 
-class ProjectSectionTitle(models.Model):
+class ProjectSectionContent(models.Model):
     title = models.CharField(max_length=65, blank=True, null=True)
     description = HTMLField(blank=True, null=True)
+    text_link_preview = models.CharField(max_length=255, blank=True, null=True)
+    text_btn_detail = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return f"{str(self.title)[:50]}"
@@ -82,10 +92,22 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"{str(self.title)[:50]}"
+    
+class Footer(models.Model):
+    text = models.CharField(max_length=255, unique=True)
+    icon_href = models.CharField(max_length=165, blank=True, null=True)
 
+    def __str__(self):
+        return self.text
+
+class MenuTranslationOptions(TranslationOptions):
+    fields = ('label', )
 
 class IntroductionTranslationOptions(TranslationOptions):
     fields = ('eyebrow', 'title', 'description', 'button_text')
+
+class ProjectSectionContentTranslationOptions(TranslationOptions):
+    fields = ('title', 'description', 'text_link_preview', 'text_btn_detail')
 
 class ProjectCategoryTranslationOptions(TranslationOptions):
     fields = ('name',)
@@ -98,3 +120,6 @@ class LinkedinTranslationOptions(TranslationOptions):
 
 class ContactTranslationOptions(TranslationOptions):
     fields = ('title', 'description', 'button_text')
+
+class FooterTranslationOptions(TranslationOptions):
+    fields = ('text',)
