@@ -26,6 +26,10 @@ class Menu(models.Model):
 
     def __str__(self):
         return self.label
+    
+    class Meta:
+        verbose_name = "Menu"
+        verbose_name_plural = "Menu"
 
 class Introduction(models.Model):
     eyebrow = models.CharField(max_length=65, blank=True, null=True)
@@ -36,6 +40,10 @@ class Introduction(models.Model):
 
     def __str__(self):
         return f"{str(self.title)[:50]}"
+    
+    class Meta:
+        verbose_name = "Introduction"
+        verbose_name_plural = "Introduction"
 
 class ProjectSectionContent(models.Model):
     title = models.CharField(max_length=65, blank=True, null=True)
@@ -45,18 +53,31 @@ class ProjectSectionContent(models.Model):
 
     def __str__(self):
         return f"{str(self.title)[:50]}"
+    
+    class Meta:
+        verbose_name = "Project Section Content"
+        verbose_name_plural = "Project Section Content"
 
 class ProjectCategory(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return f"{str(self.name)}"
+    
+    class Meta:
+        verbose_name = "Project Category"
+        verbose_name_plural = "Project Categories"
 
 class TechStack(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         return f"{str(self.name)}"
+    
+    class Meta:
+        verbose_name = "Tech Stack"
+        verbose_name_plural = "Tech Stacks"
+
 
 class Project(models.Model):
     title = models.CharField(max_length=165, blank=True, null=True)
@@ -73,7 +94,7 @@ class Project(models.Model):
         return f"{str(self.title)[:50]}"
 
 class Linkedin(models.Model):
-    title = HTMLField(max_length=95, blank=True, null=True)
+    title = HTMLField(max_length=65, blank=True, null=True)
     description = HTMLField(blank=True, null=True)
     button_href = models.CharField(max_length=165, blank=True, null=True)
     button_text = models.CharField(max_length=165, blank=True, null=True)
@@ -82,9 +103,13 @@ class Linkedin(models.Model):
     def __str__(self):
         return f"{str(self.title)[:50]}"
     
+    class Meta:
+        verbose_name = "Linkedin"
+        verbose_name_plural = "Linkedin"
+    
 
 class Contact(models.Model):
-    title = HTMLField(max_length=95, blank=True, null=True)
+    title = models.CharField(max_length=65, blank=True, null=True)
     description = HTMLField(blank=True, null=True)
     button_href = models.CharField(max_length=165, blank=True, null=True)
     button_text = models.CharField(max_length=165, blank=True, null=True)
@@ -92,6 +117,10 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"{str(self.title)[:50]}"
+    
+    class Meta:
+        verbose_name = "Contact"
+        verbose_name_plural = "Contact"
     
 class Footer(models.Model):
     text = models.CharField(max_length=255, unique=True)
@@ -99,6 +128,10 @@ class Footer(models.Model):
 
     def __str__(self):
         return self.text
+    
+    class Meta:
+        verbose_name = "Footer"
+        verbose_name_plural = "Footer"
 
 class MenuTranslationOptions(TranslationOptions):
     fields = ('label', )

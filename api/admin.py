@@ -16,7 +16,7 @@ class MenuAdmin(admin.ModelAdmin):
         (None, {
             'fields': ('name', 'order')  # Exibe os campos 'name' e 'order'
         }),
-        ('Traduções', {
+        ('Translations', {
             'fields': ('label_pt', 'label_es', 'label_en'),
         }),
     )
@@ -62,9 +62,28 @@ class TechStackAdmin(admin.ModelAdmin):
 # Registro do modelo Project
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('title', 'description_left', 'link_rep_git', 'link_preview')
-    search_fields = ('title', 'description_left', 'link_rep_git', 'link_preview')
+    list_display = ('title', 'short_description', 'link_rep_git', 'link_preview')
+    search_fields = ('title', 'short_description', 'link_rep_git', 'link_preview')
     filter_horizontal = ('techs',)
+
+    fieldsets = (
+        ('PT', {
+            'fields': ('title_pt', 'short_description_pt', 'description_right_pt', 'description_left_pt'),
+        }),
+        ('ES', {
+            'fields': ('title_es', 'short_description_es', 'description_right_es', 'description_left_es'),
+        }),
+        ('EN', {
+            'fields': ('title_en', 'short_description_en', 'description_right_en', 'description_left_en'),
+        }),
+        ('Details', {
+            'fields': ('thumbnail', 'category', 'techs')
+        }),
+        ('Links', {
+            'fields': ('link_rep_git', 'link_preview')
+        }),
+    )
+
 
     def get_fields(self, request, obj=None):
         return filter_translatable_fields(self.model)
@@ -79,6 +98,21 @@ class LinkedinAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return not Linkedin.objects.exists()
+    
+    fieldsets = (
+        ('PT', {
+            'fields': ('title_pt', 'description_pt', 'button_text_pt'),
+        }),
+        ('ES', {
+            'fields': ('title_es', 'description_es', 'button_text_es'),
+        }),
+        ('EN', {
+            'fields': ('title_en', 'description_en', 'button_text_en'),
+        }),
+        ('Links', {
+            'fields': ('button_href', 'button_text', 'button_target')
+        }),
+    )
 
 # Registro do modelo Contact
 @admin.register(Contact)
@@ -91,7 +125,7 @@ class ContactAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return not Contact.objects.exists()
     
-# Registro do modelo Contact
+# Registro do modelo Footer
 @admin.register(Footer)
 class FooterAdmin(admin.ModelAdmin):
     list_display = ("text", "icon_href")
@@ -100,13 +134,13 @@ class FooterAdmin(admin.ModelAdmin):
         (None, {
             'fields': ('icon_href',) 
         }),
-        ('Traduções', {
+        ('Translations', {
             'fields': ('text_pt', 'text_es', 'text_en'),
         }),
     )
 
     def has_add_permission(self, request):
         return not Footer.objects.exists()
-
+    
 
 
