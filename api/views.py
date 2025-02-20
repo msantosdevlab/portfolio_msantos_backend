@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -27,6 +28,13 @@ class APIKeyPermission(BasePermission):
             return True
         except AuthenticationFailed:
             return False
+
+class TokenObtainAccessOnlyView(TokenObtainPairView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)  # Chama o método da classe pai
+        # Aqui você pode manipular a resposta para retornar apenas o access token
+        response.data = {'access': response.data['access']}
+        return response
 
 class ContentViewSet(ReadOnlyModelViewSet):
     # Valida o token em cada requisição
@@ -66,7 +74,7 @@ class ContentViewSet(ReadOnlyModelViewSet):
         content_data = {
             'menu': menu_data,
             'introduction': introduction_data,
-            'project_title': project_title_data,
+            'project_content': project_title_data,
             'project_categories': project_categories_data,
             'projects': projects_data,
             'linkedin': linkedin_data,
